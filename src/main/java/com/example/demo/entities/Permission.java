@@ -6,24 +6,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 
 @Entity
 @Getter @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+@AllArgsConstructor
+public class Permission {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
+    @Column(nullable = false)
+    private String description;
 
-    @ManyToMany(mappedBy = "roles")
-    private HashSet<User> users = new HashSet<>();
-    @ManyToMany
-    @JoinTable(name = "role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private HashSet<Permission> permissions = new HashSet<>();
+    private LocalDateTime dia;
+
+    @ManyToMany(mappedBy = "permissions")
+    private HashSet<Role> roles = new HashSet<>();
+
 }
