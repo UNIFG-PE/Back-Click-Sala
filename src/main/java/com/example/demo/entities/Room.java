@@ -37,5 +37,6 @@ public class Room {
     private HashSet<RoomFeature> roomFeatures = new HashSet<>();
     @OneToMany(mappedBy = "room")
     private HashSet<RoomBooking> roomBookings = new HashSet<>();
-
+    @OneToMany(mappedBy = "room")
+    private HashSet<Photo> photos = new HashSet<>();
 }

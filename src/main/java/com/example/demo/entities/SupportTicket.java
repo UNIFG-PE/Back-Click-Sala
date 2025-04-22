@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+
 @Entity
 @Setter @Getter
 @NoArgsConstructor
@@ -24,4 +26,6 @@ public class SupportTicket {
     @ManyToOne
     @JoinColumn(name = "room_booking_id")
     private RoomBooking roomBooking;
+    @OneToMany(mappedBy = "supportTicket")
+    private HashSet<Photo> photos = new HashSet<>();
 }

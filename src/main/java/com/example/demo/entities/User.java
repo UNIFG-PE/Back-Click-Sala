@@ -29,8 +29,6 @@ public class User {
     @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false)
-    private String photoUrl;
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus Status;
 
@@ -42,4 +40,7 @@ public class User {
 
     @OneToMany(mappedBy = "attendentId")
     private HashSet<SupportTicket> supportTicket = new HashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private Photo photoUrl;
 }
