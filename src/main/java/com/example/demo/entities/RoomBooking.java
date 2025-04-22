@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Entity
 @Getter @Setter
@@ -29,8 +30,9 @@ public class RoomBooking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    //Relationship
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+    @OneToMany(mappedBy = "roomBooking")
+    private HashSet<SupportTicket> supportTickets = new HashSet<>();
 }
