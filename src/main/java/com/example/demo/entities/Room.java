@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor
@@ -30,4 +32,7 @@ public class Room {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoomStatus status;
+
+    @OneToMany(mappedBy = "room")
+    private HashSet<RoomFeature> roomFeatures = new HashSet<>();
 }
