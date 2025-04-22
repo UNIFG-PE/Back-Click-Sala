@@ -33,4 +33,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus Status;
 
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private HashSet<Role> roles = new HashSet<>();
 }
