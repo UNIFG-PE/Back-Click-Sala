@@ -11,6 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - click-sala-network
 
   app:
     build: .
@@ -23,6 +25,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/click_sala
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin123
+    networks:
+      - click-sala-network
 
 volumes:
   pgdata:
+
+networks:
+  click-sala-network:
+    external: true
