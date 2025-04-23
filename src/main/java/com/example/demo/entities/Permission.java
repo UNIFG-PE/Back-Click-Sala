@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.audit.AuditModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,10 +14,8 @@ import java.util.HashSet;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Permission {
+public class Permission extends AuditModel {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false)
