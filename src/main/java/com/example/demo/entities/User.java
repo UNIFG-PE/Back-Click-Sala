@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.audit.AuditModel;
 import com.example.demo.entities.Enum.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,9 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@Table(name = "users")
+public class User extends AuditModel {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(nullable = false, length = 150)
     private String fullName;
     @Column(nullable = false, length = 11)

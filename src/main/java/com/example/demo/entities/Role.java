@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.audit.AuditModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +13,8 @@ import java.util.HashSet;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role {
+public class Role extends AuditModel {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(nullable = false, unique = true)
     private String name;
 

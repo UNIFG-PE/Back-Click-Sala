@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.audit.AuditModel;
 import com.example.demo.entities.Enum.BookingStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,8 @@ import java.util.HashSet;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomBooking {
+public class RoomBooking extends AuditModel {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
