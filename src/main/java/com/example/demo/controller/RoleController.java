@@ -13,7 +13,7 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    @GetMapping
+    @GetMapping("/status")
     public String status (){
         return "Role controller running";
     }

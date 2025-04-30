@@ -13,7 +13,7 @@ public class PermissionController {
 
     private final PermissionService permissionService;
 
-    @GetMapping
+    @GetMapping("/status")
     public String status (){
         return "Permission controller running";
     }

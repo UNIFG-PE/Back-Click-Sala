@@ -13,7 +13,7 @@ public class SupportTicketController {
 
     private final SupportTicketService supportTicketService;
 
-    @GetMapping
+    @GetMapping("/status")
     public String status (){
         return "SupportTicket controller running";
     }

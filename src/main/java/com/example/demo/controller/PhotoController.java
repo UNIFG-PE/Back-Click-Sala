@@ -13,7 +13,7 @@ public class PhotoController {
 
     private final PhotoService photoService;
 
-    @GetMapping
+    @GetMapping("/status")
     public String status (){
         return "Photo controller running";
     }

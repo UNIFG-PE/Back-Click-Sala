@@ -13,7 +13,7 @@ public class RoomBookingController {
 
     private final RoomBookingService roomBookingService;
 
-    @GetMapping
+    @GetMapping("/status")
     public String status (){
         return "RoomBooking controller running";
     }
