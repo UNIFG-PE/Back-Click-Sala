@@ -19,10 +19,6 @@ public class Room extends AuditModel {
     @Column(nullable = false, unique = true)
     private String identifier;
     @Column(nullable = false)
-    private String campus;
-    @Column(nullable = false)
-    private String category;
-    @Column(nullable = false)
     private Integer floor;
     @Column(nullable = false)
     private Integer capacity;
@@ -32,6 +28,12 @@ public class Room extends AuditModel {
     @Column(nullable = false)
     private RoomStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "campus_id", nullable = false)
+    private Campus campus;
+    @ManyToOne
+    @JoinColumn(name= "category_id", nullable = false)
+    private Category category;
     @OneToMany(mappedBy = "room")
     private HashSet<RoomFeature> roomFeatures = new HashSet<>();
     @OneToMany(mappedBy = "room")
