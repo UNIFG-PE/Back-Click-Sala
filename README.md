@@ -17,6 +17,8 @@
 
 ---
 
+## ⚙️ Link of postman collection
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/39006660-7efdd28b-a240-4a19-ba8b-6800520fdad2?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D39006660-7efdd28b-a240-4a19-ba8b-6800520fdad2%26entityType%3Dcollection%26workspaceId%3D59b1b276-c40f-4e2d-b281-32093a373de0)
 
 ---
 
