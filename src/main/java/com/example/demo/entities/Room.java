@@ -23,7 +23,7 @@ public class Room extends AuditModel {
     @Column(nullable = false)
     private Integer capacity;
     @Column(nullable = false)
-    private String descrition;
+    private String description;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoomStatus status;
