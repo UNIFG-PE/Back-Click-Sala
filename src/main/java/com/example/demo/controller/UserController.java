@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -17,6 +17,12 @@ public class UserController {
     @GetMapping("/status")
     public String status (){
         return "User controller running";
+    }
+
+    @PostMapping("/createUser")
+    ResponseEntity<User> createUser(@RequestBody User user) {
+        User created = userService.registerUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
 
