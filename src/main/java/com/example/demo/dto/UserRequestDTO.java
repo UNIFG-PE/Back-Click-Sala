@@ -11,5 +11,5 @@ public record UserRequestDTO(
         String email,
         String password,
         UserStatus status,
-        Set<Long> roleIds // você irá buscar as Roles pelo ID
+        Set<Long> roleIds
 ) {}
