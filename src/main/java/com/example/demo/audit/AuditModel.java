@@ -26,7 +26,7 @@ public class AuditModel {
     private Instant lastModifiedAt;
     @CreatedBy
     @Column(updatable = false)
-    private Long createdBy;
+    private String createdBy;
     @LastModifiedBy
-    private Long lastUpdatedBy;
+    private String lastUpdatedBy;
 }
