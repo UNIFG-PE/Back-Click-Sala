@@ -30,4 +30,10 @@ public class CampusController {
                 .created(URI.create("/campus/" + created.id()))
                 .body(created);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CampusResponseDTO> update(@PathVariable Long id, @RequestBody CampusRequestDTO dto) {
+        CampusResponseDTO updated = campusService.updateCampus(id, dto);
+        return ResponseEntity.ok(updated);
+    }
 }

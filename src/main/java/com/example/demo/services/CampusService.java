@@ -4,6 +4,7 @@ import com.example.demo.dto.CampusRequestDTO;
 import com.example.demo.entities.Campus;
 import com.example.demo.repository.CampusRepository;
 import com.example.demo.dto.CampusResponseDTO;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,4 +30,17 @@ public class CampusService {
         Campus saved = campusRepository.save(campus);
         return new CampusResponseDTO(saved);
     }
+
+    public CampusResponseDTO updateCampus(Long id, CampusRequestDTO dto) {
+        Campus campus = campusRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Campus not found"));
+
+        campus.setName(dto.name());
+        campus.setAddress(dto.address());
+
+        Campus updatedCampus = campusRepository.save(campus);
+
+        return new CampusResponseDTO(updatedCampus);
+    }
+
 }
