@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.CampusRequestDTO;
+import com.example.demo.entities.Campus;
 import com.example.demo.repository.CampusRepository;
 import com.example.demo.dto.CampusResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +19,14 @@ public class CampusService {
         return campusRepository.findAll().stream()
                 .map(CampusResponseDTO::new)
                 .toList();
+    }
+
+    public CampusResponseDTO createCampus(CampusRequestDTO dto) {
+        Campus campus = new Campus();
+        campus.setName(dto.name());
+        campus.setAddress(dto.address());
+
+        Campus saved = campusRepository.save(campus);
+        return new CampusResponseDTO(saved);
     }
 }
