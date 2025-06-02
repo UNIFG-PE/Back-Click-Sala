@@ -43,4 +43,10 @@ public class CampusService {
         return new CampusResponseDTO(updatedCampus);
     }
 
+    public void deleteCampus(Long id) {
+        Campus campus = campusRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Campus not found"));
+
+        campusRepository.delete(campus);
+    }
 }

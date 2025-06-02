@@ -36,4 +36,9 @@ public class CampusController {
         CampusResponseDTO updated = campusService.updateCampus(id, dto);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        campusService.deleteCampus(id);
+    }
 }
