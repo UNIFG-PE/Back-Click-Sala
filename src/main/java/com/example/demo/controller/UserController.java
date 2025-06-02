@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.UserRegisterRequestDTO;
+import com.example.demo.dto.UserRegisterResponseDTO;
 import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +16,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/status")
-    public String status (){
-        return "User controller running";
-    }
-
     @PostMapping("/createUser")
-    ResponseEntity<User> createUser(@RequestBody User user) {
-        User created = userService.registerUser(user);
+    public ResponseEntity<UserRegisterResponseDTO> createUser(@RequestBody UserRegisterRequestDTO dto) {
+        UserRegisterResponseDTO created = userService.createUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
