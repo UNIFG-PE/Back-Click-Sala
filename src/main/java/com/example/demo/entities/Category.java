@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -23,5 +24,5 @@ public class Category extends AuditModel {
     private String description;
 
     @OneToMany(mappedBy = "category")
-    private HashSet<Room> rooms = new HashSet<>();
+    private Set<Room> rooms = new HashSet<>();
 }
