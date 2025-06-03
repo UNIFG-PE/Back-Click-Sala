@@ -22,6 +22,13 @@ public class CampusService {
                 .toList();
     }
 
+    public CampusResponseDTO getCampusById(Long id) {
+        Campus campus = campusRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Campus not found"));
+
+        return new CampusResponseDTO(campus);
+    }
+
     public CampusResponseDTO createCampus(CampusRequestDTO dto) {
         Campus campus = new Campus();
         campus.setName(dto.name());

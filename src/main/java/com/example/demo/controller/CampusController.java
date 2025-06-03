@@ -23,6 +23,12 @@ public class CampusController {
         return ResponseEntity.ok(campus);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CampusResponseDTO> getById(@PathVariable Long id) {
+        CampusResponseDTO campus = campusService.getCampusById(id);
+        return ResponseEntity.ok(campus);
+    }
+
     @PostMapping
     public ResponseEntity<CampusResponseDTO> create(@RequestBody CampusRequestDTO dto) {
         CampusResponseDTO created = campusService.createCampus(dto);
