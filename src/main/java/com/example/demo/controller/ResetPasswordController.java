@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.repository.changePasswordDto;
+import com.example.demo.services.ResetPasswordService;
 import com.example.demo.services.UserService;
 
 @RestController // Define que essa classe é um controlador REST
@@ -21,9 +22,9 @@ public class ResetPasswordController {
     @PostMapping("/change-password") // Define o endpoint POST para /usuarios/alterar-senha
     public ResponseEntity<String> changePassword(@RequestBody changePasswordDto dto) {
         // Chama o serviço passando os dados do DTO
-        String resultado = resetPasswordService.alterarSenha(dto.getEmail(), dto.getNewpassword(), dto.getConfirmpassword());
+        String result = resetPasswordService.changePassword(dto.getEmail(), dto.getNewpassword(), dto.getConfirmpassword());
 
         // Retorna a resposta para o cliente (front)
-        return ResponseEntity.ok(resultad);
+        return ResponseEntity.ok(result);
     }
 }
