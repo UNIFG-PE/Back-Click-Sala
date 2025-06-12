@@ -1,7 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.CampusRequestDTO;
-import com.example.demo.dto.CampusResponseDTO;
 import com.example.demo.dto.RoomFeatureRequestDTO;
 import com.example.demo.dto.RoomFeatureResponseDTO;
 import com.example.demo.entities.Campus;
@@ -46,5 +44,18 @@ public class RoomFeatureService {
 
         RoomFeature saved = roomFeatureRepository.save(feature);
         return new RoomFeatureResponseDTO(saved);
+    }
+
+    @Transactional
+    public RoomFeatureResponseDTO updateFeature(Long id, RoomFeatureRequestDTO dto) {
+        RoomFeature feature = roomFeatureRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Feature not found"));
+
+        feature.setName(dto.name());
+        feature.setQuantity(dto.quantity());
+
+        RoomFeature updatedFeature = roomFeatureRepository.save(feature);
+
+        return new RoomFeatureResponseDTO(updatedFeature);
     }
 }

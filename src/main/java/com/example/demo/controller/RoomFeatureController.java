@@ -41,4 +41,10 @@ public class RoomFeatureController {
                 .created(URI.create("/roomfeatures/" + created.id()))
                 .body(created);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<RoomFeatureResponseDTO> update(@PathVariable Long id, @RequestBody RoomFeatureRequestDTO dto) {
+        RoomFeatureResponseDTO updated = roomFeatureService.updateFeature(id, dto);
+        return ResponseEntity.ok(updated);
+    }
 }
