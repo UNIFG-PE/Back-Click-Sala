@@ -2,7 +2,6 @@ package com.example.demo.services;
 
 import com.example.demo.dto.RoomFeatureRequestDTO;
 import com.example.demo.dto.RoomFeatureResponseDTO;
-import com.example.demo.entities.Campus;
 import com.example.demo.entities.RoomFeature;
 import com.example.demo.repository.RoomFeatureRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -57,5 +56,13 @@ public class RoomFeatureService {
         RoomFeature updatedFeature = roomFeatureRepository.save(feature);
 
         return new RoomFeatureResponseDTO(updatedFeature);
+    }
+
+    @Transactional
+    public void deleteFeature(Long id) {
+        RoomFeature feature = roomFeatureRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Feature not found"));
+
+        roomFeatureRepository.delete(feature);
     }
 }

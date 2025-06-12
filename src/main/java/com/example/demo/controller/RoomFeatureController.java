@@ -47,4 +47,9 @@ public class RoomFeatureController {
         RoomFeatureResponseDTO updated = roomFeatureService.updateFeature(id, dto);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        roomFeatureService.deleteFeature(id);
+    }
 }
