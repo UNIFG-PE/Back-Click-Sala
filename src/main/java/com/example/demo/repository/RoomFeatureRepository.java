@@ -4,4 +4,5 @@ import com.example.demo.entities.RoomFeature;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoomFeatureRepository extends JpaRepository<RoomFeature, Long> {
+    boolean existsByName(String name);
 }

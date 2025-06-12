@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.RoomFeatureRequestDTO;
 import com.example.demo.dto.RoomFeatureResponseDTO;
 import com.example.demo.services.RoomFeatureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,5 +32,13 @@ public class RoomFeatureController {
     public ResponseEntity<RoomFeatureResponseDTO> getById(@PathVariable Long id) {
         RoomFeatureResponseDTO feature = roomFeatureService.getFeatureById(id);
         return ResponseEntity.ok(feature);
+    }
+
+    @PostMapping
+    public ResponseEntity<RoomFeatureResponseDTO> create(@RequestBody RoomFeatureRequestDTO dto) {
+        RoomFeatureResponseDTO created = roomFeatureService.createFeature(dto);
+        return ResponseEntity
+                .created(URI.create("/roomfeatures/" + created.id()))
+                .body(created);
     }
 }
