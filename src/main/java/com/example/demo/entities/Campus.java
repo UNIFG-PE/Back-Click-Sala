@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -24,5 +25,5 @@ public class Campus extends AuditModel {
     private String address;
 
     @OneToMany(mappedBy = "campus")
-    private HashSet<Room> rooms = new HashSet<>();
+    private Set<Room> rooms = new HashSet<>();
 }
