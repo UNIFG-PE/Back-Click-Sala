@@ -1,0 +1,47 @@
+package com.example.demo.entities;
+
+import com.example.demo.audit.AuditModel;
+import com.example.demo.entities.Enum.UserStatus;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
+public class User extends AuditModel {
+
+    @Column(nullable = false, length = 150)
+    private String fullName;
+    @Column(nullable = false, length = 11)
+    private String cpf;
+    @Column(nullable = false)
+    private String phoneNumber;
+    @Column(nullable = false, unique = true, length = 150)
+    private String email;
+    @Column(nullable = false, length = 100)
+    private String password;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus Status;
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "attendentId")
+    private Set<SupportTicket> supportTicket = new HashSet<>();
+
+    @OneToOne(mappedBy = "user")
+    private Photo photoUrl;
+}
