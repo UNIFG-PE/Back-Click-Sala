@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -19,10 +20,10 @@ public class Role extends AuditModel {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private HashSet<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private HashSet<Permission> permissions = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 }

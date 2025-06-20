@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -34,12 +34,12 @@ public class User extends AuditModel {
 
     @ManyToMany
     @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private HashSet<Role> roles = new HashSet<>();
+           joinColumns = @JoinColumn(name = "user_id"),
+           inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "attendentId")
-    private HashSet<SupportTicket> supportTicket = new HashSet<>();
+    private Set<SupportTicket> supportTicket = new HashSet<>();
 
     @OneToOne(mappedBy = "user")
     private Photo photoUrl;
