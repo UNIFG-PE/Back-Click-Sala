@@ -35,7 +35,7 @@ public class Room extends AuditModel {
     @ManyToOne
     @JoinColumn(name= "category_id", nullable = false)
     private Category category;
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
     private Set<RoomFeature> roomFeatures = new HashSet<>();
     @OneToMany(mappedBy = "room")
     private Set<RoomBooking> roomBookings = new HashSet<>();

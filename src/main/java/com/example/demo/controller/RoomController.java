@@ -48,4 +48,10 @@ public class RoomController {
         RoomResponseDTO updated = roomService.updateRoom(id, dto);
         return ResponseEntity.ok(updated);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        roomService.deleteRoom(id);
+        return ResponseEntity.noContent().build(); // HTTP 204
+    }
 }

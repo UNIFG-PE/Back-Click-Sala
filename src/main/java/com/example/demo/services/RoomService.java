@@ -64,6 +64,7 @@ public class RoomService {
         return new RoomResponseDTO(saved);
     }
 
+    @Transactional
     public RoomResponseDTO updateRoom(Long id, RoomRequestDTO dto) {
         Room room = roomRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Room not found"));
@@ -84,5 +85,13 @@ public class RoomService {
 
         Room updated = roomRepository.save(room);
         return new RoomResponseDTO(updated);
+    }
+
+    @Transactional
+    public void deleteRoom(Long id) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+
+        roomRepository.delete(room);
     }
 }
