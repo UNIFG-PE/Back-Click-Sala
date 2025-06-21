@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -23,7 +24,7 @@ public class Room extends AuditModel {
     @Column(nullable = false)
     private Integer capacity;
     @Column(nullable = false)
-    private String descrition;
+    private String description;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoomStatus status;
@@ -35,9 +36,9 @@ public class Room extends AuditModel {
     @JoinColumn(name= "category_id", nullable = false)
     private Category category;
     @OneToMany(mappedBy = "room")
-    private HashSet<RoomFeature> roomFeatures = new HashSet<>();
+    private Set<RoomFeature> roomFeatures = new HashSet<>();
     @OneToMany(mappedBy = "room")
-    private HashSet<RoomBooking> roomBookings = new HashSet<>();
+    private Set<RoomBooking> roomBookings = new HashSet<>();
     @OneToMany(mappedBy = "room")
-    private HashSet<Photo> photos = new HashSet<>();
+    private Set<Photo> photos = new HashSet<>();
 }
