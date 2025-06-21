@@ -9,8 +9,8 @@ public record RoomResponseDTO(
         Integer capacity,
         String description,
         String status,
-        Long campusId,
-        Long categoryId
+        String campusName,
+        String categoryName
 ) {
     public RoomResponseDTO(Room room) {
         this(
@@ -20,8 +20,8 @@ public record RoomResponseDTO(
                 room.getCapacity(),
                 room.getDescription(),
                 room.getStatus().name(),
-                room.getCampus() != null ? room.getCampus().getId() : null,
-                room.getCategory() != null ? room.getCategory().getId() : null
+                room.getCampus() != null ? room.getCampus().getName() : null,
+                room.getCategory() != null ? room.getCategory().getName() : null
         );
     }
 }

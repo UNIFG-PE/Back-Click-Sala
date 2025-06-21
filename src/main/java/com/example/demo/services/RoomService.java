@@ -63,4 +63,26 @@ public class RoomService {
         Room saved = roomRepository.save(room);
         return new RoomResponseDTO(saved);
     }
+
+    public RoomResponseDTO updateRoom(Long id, RoomRequestDTO dto) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+
+        room.setIdentifier(dto.identifier());
+        room.setFloor(dto.floor());
+        room.setCapacity(dto.capacity());
+        room.setDescription(dto.description());
+        room.setStatus(RoomStatus.valueOf(dto.status().toUpperCase()));
+
+        Campus campus = campusRepository.findById(dto.campusId())
+                .orElseThrow(() -> new EntityNotFoundException("Campus not found"));
+        room.setCampus(campus);
+
+        Category category = categoryRepository.findById(dto.categoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        room.setCategory(category);
+
+        Room updated = roomRepository.save(room);
+        return new RoomResponseDTO(updated);
+    }
 }
