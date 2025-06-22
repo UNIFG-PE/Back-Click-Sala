@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,14 +44,12 @@ public class SupportTicketService {
     public SupportTicketResponseDTO create(SupportTicketRequestDTO requestDTO) {
         SupportTicket supportTicket = supportTicketMapper.toEntity(requestDTO);
 
-        // Set room booking if provided
         if (requestDTO.getRoomBookingId() != null) {
             RoomBooking roomBooking = roomBookingRepository.findById(requestDTO.getRoomBookingId())
                     .orElseThrow(() -> new EntityNotFoundException("Room booking not found with id: " + requestDTO.getRoomBookingId()));
             supportTicket.setRoomBooking(roomBooking);
         }
 
-        // Set attendent if provided
         if (requestDTO.getAttendentId() != null) {
             User attendent = userRepository.findById(requestDTO.getAttendentId())
                     .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + requestDTO.getAttendentId()));
@@ -66,10 +65,8 @@ public class SupportTicketService {
         SupportTicket existingTicket = supportTicketRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Support ticket not found with id: " + id));
 
-        // Update fields
         existingTicket.setReason(requestDTO.getReason());
 
-        // Update room booking if provided
         if (requestDTO.getRoomBookingId() != null) {
             RoomBooking roomBooking = roomBookingRepository.findById(requestDTO.getRoomBookingId())
                     .orElseThrow(() -> new EntityNotFoundException("Room booking not found with id: " + requestDTO.getRoomBookingId()));
@@ -78,7 +75,6 @@ public class SupportTicketService {
             existingTicket.setRoomBooking(null);
         }
 
-        // Update attendent if provided
         if (requestDTO.getAttendentId() != null) {
             User attendent = userRepository.findById(requestDTO.getAttendentId())
                     .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + requestDTO.getAttendentId()));
@@ -97,5 +93,21 @@ public class SupportTicketService {
             throw new EntityNotFoundException("Support ticket not found with id: " + id);
         }
         supportTicketRepository.deleteById(id);
+    }
+
+    @Transactional
+    public SupportTicketResponseDTO assignAttendent(Long ticketId, Long attendentId) {
+        SupportTicket ticket = supportTicketRepository.findById(ticketId)
+                .orElseThrow(() -> new EntityNotFoundException("SupportTicket não encontrado com ID: " + ticketId));
+
+        User attendent = userRepository.findById(attendentId)
+                .orElseThrow(() -> new EntityNotFoundException("User não encontrado com ID: " + attendentId));
+
+        ticket.setAttendentId(attendent);
+        ticket.setLastModifiedAt(Instant.now());
+
+        SupportTicket savedTicket = supportTicketRepository.save(ticket);
+
+        return supportTicketMapper.toResponseDTO(savedTicket);
     }
 }

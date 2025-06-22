@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AssignAttendentRequestDTO;
 import com.example.demo.dto.SupportTicketRequestDTO;
 import com.example.demo.dto.SupportTicketResponseDTO;
 import com.example.demo.services.SupportTicketService;
@@ -53,5 +54,14 @@ public class SupportTicketController {
     public ResponseEntity<Void> deleteSupportTicket(@PathVariable Long id) {
         supportTicketService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/assign-attendent")
+    public ResponseEntity<SupportTicketResponseDTO> assignAttendent(@RequestBody @Valid AssignAttendentRequestDTO requestDTO) {
+        SupportTicketResponseDTO updatedTicket = supportTicketService.assignAttendent(
+                requestDTO.getTicketId(),
+                requestDTO.getAttendentId()
+        );
+        return ResponseEntity.ok(updatedTicket);
     }
 }

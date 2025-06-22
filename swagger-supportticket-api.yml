@@ -1,0 +1,454 @@
+openapi: 3.0.3
+info:
+  title: Support Ticket API
+  description: |
+    API para gerenciamento de tickets de suporte do sistema Click Sala da UniFG.
+
+    ## Autenticação
+    Esta API utiliza autenticação HTTP Basic. Use as seguintes credenciais para teste:
+    - **Usuário:** `SDMUnifgOdaback8gs2`
+    - **Senha:** `SDM7Unifg9DJEwh`
+
+    ## Funcionalidades
+    - ✅ Criar, listar, atualizar e deletar tickets de suporte
+    - ✅ Atribuir atendentes aos tickets
+    - ✅ Associar tickets a reservas de salas
+    - ✅ Controle de timestamps automático
+
+    ## Usuários
+    - Crie um user, pois será necessário para usar a rota de atribuir um atendente ao ticket.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Servidor de desenvolvimento local
+
+security:
+  - basicAuth: []
+
+tags:
+  - name: Support Tickets
+    description: Operações relacionadas aos tickets de suporte
+    externalDocs:
+      description: Documentação adicional
+      url: https://docs.unifg.edu.br/click-sala
+
+paths:
+  /api/v1/supporttickets/status:
+    get:
+      tags:
+        - Support Tickets
+      summary: Verificar status do controller
+      description: Endpoint para verificar se o controller está funcionando
+      responses:
+        '200':
+          description: Controller funcionando
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "SupportTicket controller running"
+
+  /api/v1/supporttickets:
+    get:
+      tags:
+        - Support Tickets
+      summary: Listar todos os tickets de suporte
+      description: Retorna uma lista com todos os tickets de suporte cadastrados
+      responses:
+        '200':
+          description: Lista de tickets retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportTicketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Support Tickets
+      summary: Criar novo ticket de suporte
+      description: Cria um novo ticket de suporte no sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+            examples:
+              ticket_simples:
+                summary: Ticket simples
+                value:
+                  reason: "Ar condicionado não está funcionando"
+              ticket_com_atendente:
+                summary: Ticket com atendente
+                value:
+                  reason: "Problema na rede"
+                  attendentId: 3
+              ticket_completo:
+                summary: Ticket completo
+                value:
+                  reason: "Projetor não funciona"
+                  attendentId: 4
+                  roomBookingId: 1
+      responses:
+        '201':
+          description: Ticket criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicketResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/supporttickets/{id}:
+    get:
+      tags:
+        - Support Tickets
+      summary: Buscar ticket por ID
+      description: Retorna um ticket específico pelo seu ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do ticket de suporte
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Ticket encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicketResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - Support Tickets
+      summary: Atualizar ticket de suporte
+      description: Atualiza completamente um ticket de suporte existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do ticket de suporte
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+            examples:
+              atualizacao_simples:
+                summary: Atualização simples
+                value:
+                  reason: "Ar condicionado não está funcionando - URGENTE"
+              atualizacao_completa:
+                summary: Atualização completa
+                value:
+                  reason: "Problema na rede resolvido"
+                  attendentId: 2
+                  roomBookingId: 3
+      responses:
+        '200':
+          description: Ticket atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicketResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - Support Tickets
+      summary: Deletar ticket de suporte
+      description: Remove um ticket de suporte do sistema
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do ticket de suporte
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '204':
+          description: Ticket deletado com sucesso
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/supporttickets/assign-attendent:
+    patch:
+      tags:
+        - Support Tickets
+      summary: Atribuir atendente ao ticket
+      description: Atribui um atendente específico a um ticket de suporte existente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignAttendentRequest'
+            examples:
+              atribuicao_exemplo:
+                summary: Exemplo de atribuição
+                value:
+                  ticketId: 2
+                  attendentId: 4
+      responses:
+        '200':
+          description: Atendente atribuído com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicketResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Autenticação básica HTTP (usuário e senha)
+
+  schemas:
+    SupportTicketRequest:
+      type: object
+      required:
+        - reason
+      properties:
+        reason:
+          type: string
+          description: Motivo/descrição do ticket de suporte
+          example: "Ar condicionado não está funcionando"
+          minLength: 1
+          maxLength: 500
+        attendentId:
+          type: integer
+          format: int64
+          description: ID do usuário responsável pelo atendimento (opcional)
+          example: 3
+          nullable: true
+        roomBookingId:
+          type: integer
+          format: int64
+          description: ID da reserva de sala relacionada (opcional)
+          example: 1
+          nullable: true
+
+    SupportTicketResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID único do ticket
+          example: 1
+        reason:
+          type: string
+          description: Motivo/descrição do ticket de suporte
+          example: "Ar condicionado não está funcionando"
+        attendentId:
+          type: integer
+          format: int64
+          description: ID do usuário responsável pelo atendimento
+          example: 3
+          nullable: true
+        roomBookingId:
+          type: integer
+          format: int64
+          description: ID da reserva de sala relacionada
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Data e hora de criação do ticket
+          example: "2025-06-22T18:31:21.059221Z"
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: Data e hora da última modificação
+          example: "2025-06-22T18:47:29.287041698Z"
+
+    AssignAttendentRequest:
+      type: object
+      required:
+        - ticketId
+        - attendentId
+      properties:
+        ticketId:
+          type: integer
+          format: int64
+          description: ID do ticket que receberá o atendente
+          example: 2
+        attendentId:
+          type: integer
+          format: int64
+          description: ID do usuário que será atribuído como atendente
+          example: 4
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp do erro
+          example: "2025-06-22T18:48:04.339+00:00"
+        status:
+          type: integer
+          description: Código de status HTTP
+          example: 500
+        error:
+          type: string
+          description: Descrição do erro
+          example: "Internal Server Error"
+        path:
+          type: string
+          description: Caminho da requisição que gerou o erro
+          example: "/api/v1/supporttickets/assign-attendent"
+
+  responses:
+    BadRequest:
+      description: Requisição inválida
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            timestamp: "2025-06-22T18:48:04.339+00:00"
+            status: 400
+            error: "Bad Request"
+            path: "/api/v1/supporttickets"
+
+    Unauthorized:
+      description: Não autorizado - credenciais inválidas
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            timestamp: "2025-06-22T18:48:04.339+00:00"
+            status: 401
+            error: "Unauthorized"
+            path: "/api/v1/supporttickets"
+
+    NotFound:
+      description: Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            timestamp: "2025-06-22T18:48:04.339+00:00"
+            status: 404
+            error: "Not Found"
+            path: "/api/v1/supporttickets/999"
+
+    InternalServerError:
+      description: Erro interno do servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            timestamp: "2025-06-22T18:48:04.339+00:00"
+            status: 500
+            error: "Internal Server Error"
+            path: "/api/v1/supporttickets"
+
+  examples:
+    curl_commands:
+      summary: Exemplos de comandos cURL
+      description: |
+        ## Comandos cURL para teste da API
+
+        ### 1. Listar todos os tickets
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X GET "http://localhost:8080/api/v1/supporttickets"
+        ```
+
+        ### 2. Criar ticket simples
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X POST "http://localhost:8080/api/v1/supporttickets" \
+             -H "Content-Type: application/json" \
+             -d '{"reason": "Ar condicionado não está funcionando"}'
+        ```
+
+        ### 3. Criar ticket com atendente
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X POST "http://localhost:8080/api/v1/supporttickets" \
+             -H "Content-Type: application/json" \
+             -d '{"reason": "Problema na rede", "attendentId": 3}'
+        ```
+
+        ### 4. Atribuir atendente a ticket existente
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X PATCH "http://localhost:8080/api/v1/supporttickets/assign-attendent" \
+             -H "Content-Type: application/json" \
+             -d '{"ticketId": 2, "attendentId": 4}'
+        ```
+
+        ### 5. Buscar ticket específico
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X GET "http://localhost:8080/api/v1/supporttickets/1"
+        ```
+
+        ### 6. Atualizar ticket
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X PUT "http://localhost:8080/api/v1/supporttickets/1" \
+             -H "Content-Type: application/json" \
+             -d '{"reason": "Ar condicionado não está funcionando - URGENTE"}'
+        ```
+
+        ### 7. Deletar ticket
+        ```bash
+        curl -u "SDMUnifgOdaback8gs2:SDM7Unifg9DJEwh" \
+             -X DELETE "http://localhost:8080/api/v1/supporttickets/1"
+        ```
