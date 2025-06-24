@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.UserRegisterRequestDTO;
 import com.example.demo.dto.UserRegisterResponseDTO;
+import com.example.demo.entities.Enum.UserStatus;
 import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
 import jakarta.validation.Valid;
@@ -54,6 +55,13 @@ public class UserController {
     @GetMapping("/check-cpf")
     public ResponseEntity<Boolean> cpfExists(@RequestParam String cpf) {
         return ResponseEntity.ok(userService.cpfExists(cpf));
+    }
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Void> changeUserStatus(
+            @PathVariable Long id,
+            @RequestParam UserStatus status) {
+        userService.changeStatus(id, status);
+        return ResponseEntity.noContent().build();
     }
 
 
