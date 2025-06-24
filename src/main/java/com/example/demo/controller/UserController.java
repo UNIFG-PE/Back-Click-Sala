@@ -22,6 +22,12 @@ public class UserController {
         UserRegisterResponseDTO created = userService.createUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserRegisterResponseDTO> updateUser(
+            @PathVariable Long id,
+            @RequestBody @Valid UserRegisterRequestDTO dto) {
+        return ResponseEntity.ok(userService.updateUser(id, dto));
+    }
 
 
 }
