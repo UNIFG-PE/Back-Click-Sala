@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -24,6 +25,6 @@ public class Permission extends AuditModel {
     private LocalDateTime dia;
 
     @ManyToMany(mappedBy = "permissions")
-    private HashSet<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
 }

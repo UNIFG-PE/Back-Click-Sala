@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -24,5 +25,5 @@ public class Role extends AuditModel {
     @JoinTable(name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private HashSet<Permission> permissions = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 }
