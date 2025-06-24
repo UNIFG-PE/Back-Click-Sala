@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
@@ -32,6 +34,10 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping
+    public ResponseEntity<List<UserRegisterResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
 
