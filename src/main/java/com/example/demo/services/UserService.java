@@ -48,5 +48,12 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+    @Transactional
+    public List<UserRegisterResponseDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toResponseDTO)
+                .toList();
+    }
+
 
 }
