@@ -47,6 +47,14 @@ public class UserController {
     public ResponseEntity<List<UserRegisterResponseDTO>> searchUsersByName(@RequestParam String name) {
         return ResponseEntity.ok(userService.findByName(name));
     }
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> emailExists(@RequestParam String email) {
+        return ResponseEntity.ok(userService.emailExists(email));
+    }
+    @GetMapping("/check-cpf")
+    public ResponseEntity<Boolean> cpfExists(@RequestParam String cpf) {
+        return ResponseEntity.ok(userService.cpfExists(cpf));
+    }
 
 
 }
