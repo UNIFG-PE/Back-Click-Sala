@@ -5,6 +5,7 @@ import com.example.demo.dto.RoomResponseDTO;
 import com.example.demo.entities.Campus;
 import com.example.demo.entities.Category;
 import com.example.demo.entities.Enum.RoomStatus;
+import com.example.demo.entities.Photo;
 import com.example.demo.entities.Room;
 import com.example.demo.repository.CampusRepository;
 import com.example.demo.repository.CategoryRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +60,11 @@ public class RoomService {
         room.setStatus(RoomStatus.valueOf(dto.status()));
         room.setCampus(campus);
         room.setCategory(category);
+        String imageUrl = dto.imageUrl();
+        if (imageUrl == null || imageUrl.isBlank()) {
+            imageUrl = "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80";
+        }
+        room.setImageUrl(imageUrl);
 
 
         Room saved = roomRepository.save(room);

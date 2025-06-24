@@ -28,6 +28,8 @@ public class Room extends AuditModel {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoomStatus status;
+    @Column(nullable = false)
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "campus_id", nullable = false)

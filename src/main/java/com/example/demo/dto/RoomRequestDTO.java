@@ -7,6 +7,7 @@ public record RoomRequestDTO(
         String description,
         String status,
         Long campusId,
-        Long categoryId
+        Long categoryId,
+        String imageUrl
 ) {
 }
