@@ -43,6 +43,10 @@ public class UserController {
     public ResponseEntity<UserRegisterResponseDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<UserRegisterResponseDTO>> searchUsersByName(@RequestParam String name) {
+        return ResponseEntity.ok(userService.findByName(name));
+    }
 
 
 }
