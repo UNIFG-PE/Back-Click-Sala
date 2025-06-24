@@ -54,6 +54,11 @@ public class UserService {
                 .map(userMapper::toResponseDTO)
                 .toList();
     }
-
+    @Transactional
+    public UserRegisterResponseDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+        return userMapper.toResponseDTO(user);
+    }
 
 }
