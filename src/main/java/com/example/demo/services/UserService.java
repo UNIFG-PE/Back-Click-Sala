@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -31,6 +33,14 @@ public class UserService {
 
         return userMapper.toResponseDTO(userRepository.save(updatedUser));
     }
+
+    @Transactional
+    public List<UserRegisterResponseDTO> findByName(String name) {
+        return userRepository.findByFullNameContainingIgnoreCase(name).stream()
+                .map(userMapper::toResponseDTO)
+                .toList();
+    }
+
     @Transactional
     public void deleteUserById(Long id) {
         if (!userRepository.existsById(id)) {
