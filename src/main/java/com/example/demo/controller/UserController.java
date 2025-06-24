@@ -28,6 +28,11 @@ public class UserController {
             @RequestBody @Valid UserRegisterRequestDTO dto) {
         return ResponseEntity.ok(userService.updateUser(id, dto));
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }
