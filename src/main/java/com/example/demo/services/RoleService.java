@@ -2,7 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dto.PermissionResponseDTO;
 import com.example.demo.dto.RoleRequestDTO;
-import com.example.demo.dto.mapper.RoleResponseDTO;
+import com.example.demo.dto.RoleResponseDTO;
 import com.example.demo.entities.Permission;
 import com.example.demo.entities.Role;
 import com.example.demo.repository.PermissionRepository;
