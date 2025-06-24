@@ -31,5 +31,12 @@ public class UserService {
 
         return userMapper.toResponseDTO(userRepository.save(updatedUser));
     }
+    @Transactional
+    public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException("User not found with ID: " + id);
+        }
+        userRepository.deleteById(id);
+    }
 
 }
