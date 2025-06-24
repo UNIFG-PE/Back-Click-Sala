@@ -60,5 +60,8 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
         return userMapper.toResponseDTO(user);
     }
+    public boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
 }
