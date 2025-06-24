@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.dto.UserRegisterRequestDTO;
 import com.example.demo.dto.UserRegisterResponseDTO;
 import com.example.demo.dto.mapper.UserMapper;
+import com.example.demo.entities.Enum.UserStatus;
 import com.example.demo.entities.User;
 import com.example.demo.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -66,5 +67,13 @@ public class UserService {
     public boolean cpfExists(String cpf) {
         return userRepository.existsByCpf(cpf);
     }
-
+    @Transactional
+    public void changeStatus(Long userId, UserStatus status) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        user.setStatus(status);
+        userRepository.save(user);
+    }
 }
+
+
