@@ -20,7 +20,7 @@ public class Role extends AuditModel {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private HashSet<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),

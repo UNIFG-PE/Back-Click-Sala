@@ -3,6 +3,7 @@ package com.example.demo.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,6 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Bean
@@ -27,13 +29,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request)-> request
                         .requestMatchers(HttpMethod.POST,"/api/v1/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/register").permitAll()
+                        .requestMatchers("/api/v1/roles/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/permissions/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
         return http.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
-        UserDetails user = User.withUsername("SDMUnifgOdaback8gs2").password("{noop}SDM7Unifg9DJEwh").build();
+        UserDetails user = User.withUsername("SDMUnifgOdaback8gs2").password("{noop}SDM7Unifg9DJEwh").roles("ADMIN").build();
         return new InMemoryUserDetailsManager(user);
     }
 
