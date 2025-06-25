@@ -2,8 +2,10 @@ package com.example.demo.services;
 
 import com.example.demo.dto.RoomFeatureRequestDTO;
 import com.example.demo.dto.RoomFeatureResponseDTO;
+import com.example.demo.entities.Room;
 import com.example.demo.entities.RoomFeature;
 import com.example.demo.repository.RoomFeatureRepository;
+import com.example.demo.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +19,7 @@ import java.util.List;
 public class RoomFeatureService {
 
     private final RoomFeatureRepository roomFeatureRepository;
+    private final RoomRepository roomRepository;
 
     public List<RoomFeatureResponseDTO> findAll() {
         return roomFeatureRepository.findAll().stream()
@@ -33,13 +36,16 @@ public class RoomFeatureService {
 
     @Transactional
     public RoomFeatureResponseDTO createFeature(RoomFeatureRequestDTO dto) {
-        if (roomFeatureRepository.existsByName(dto.name())) {
-            throw new DataIntegrityViolationException("Feature already exists");
-        }
 
         RoomFeature feature = new RoomFeature();
         feature.setName(dto.name());
         feature.setQuantity(dto.quantity());
+
+        if (dto.roomId() != null) {
+            Room room = roomRepository.findById(dto.roomId())
+                    .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+            feature.setRoom(room);
+        }
 
         RoomFeature saved = roomFeatureRepository.save(feature);
         return new RoomFeatureResponseDTO(saved);
@@ -52,6 +58,9 @@ public class RoomFeatureService {
 
         feature.setName(dto.name());
         feature.setQuantity(dto.quantity());
+        Room room = roomRepository.findById(dto.roomId())
+                .orElseThrow(() -> new EntityNotFoundException("Room not found"));
+        feature.setRoom(room);
 
         RoomFeature updatedFeature = roomFeatureRepository.save(feature);
 
