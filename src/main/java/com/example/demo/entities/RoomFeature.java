@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoomFeature extends AuditModel {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private Integer quantity;
