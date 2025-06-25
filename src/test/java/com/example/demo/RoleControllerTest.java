@@ -84,6 +84,7 @@ public class RoleControllerTest {
                                   "permissionIds": []
                                 }
                                 """))
+                .andDo(print())
                 .andExpect(status().isCreated()) // <-- Espera status 201
                 .andExpect(jsonPath("$.name").value("PROFESSOR_TI"));
     }
