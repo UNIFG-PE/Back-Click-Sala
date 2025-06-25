@@ -6,7 +6,9 @@ import com.example.demo.repository.CampusRepository;
 import com.example.demo.dto.CampusResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,7 +31,12 @@ public class CampusService {
         return new CampusResponseDTO(campus);
     }
 
+    @Transactional
     public CampusResponseDTO createCampus(CampusRequestDTO dto) {
+        if (campusRepository.existsByName(dto.name())) {
+            throw new DataIntegrityViolationException("Campus already exists");
+        }
+
         Campus campus = new Campus();
         campus.setName(dto.name());
         campus.setAddress(dto.address());
@@ -38,6 +45,7 @@ public class CampusService {
         return new CampusResponseDTO(saved);
     }
 
+    @Transactional
     public CampusResponseDTO updateCampus(Long id, CampusRequestDTO dto) {
         Campus campus = campusRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Campus not found"));
@@ -50,6 +58,7 @@ public class CampusService {
         return new CampusResponseDTO(updatedCampus);
     }
 
+    @Transactional
     public void deleteCampus(Long id) {
         Campus campus = campusRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Campus not found"));
