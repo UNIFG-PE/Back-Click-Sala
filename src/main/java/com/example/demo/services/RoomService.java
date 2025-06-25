@@ -90,6 +90,11 @@ public class RoomService {
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         room.setCategory(category);
 
+        String imageUrl = dto.imageUrl();
+        if (imageUrl != null && !imageUrl.isBlank()) {
+            room.setImageUrl(imageUrl);
+        }
+
         Room updated = roomRepository.save(room);
         return new RoomResponseDTO(updated);
     }
